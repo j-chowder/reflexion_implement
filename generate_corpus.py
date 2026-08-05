@@ -6,42 +6,26 @@ import shutil
 import re
 
 def split_into_docs():
- # Read the input
- text = Path("./corpus/input.txt").read_text(encoding="utf-8").strip()
-
- # Split into sentences
- sentences = [s.strip() + "." for s in text.split(".") if s.strip()]
-
- # Create output directory
- output_dir = Path("corpus/original")
- output_dir.mkdir(exist_ok=True)
-
- # Write one sentence per file
- for i, sentence in enumerate(sentences, start=1):
-    if sentence.strip():
-        (output_dir / f"doc_{i}.txt").write_text(
-            sentence.strip(),
-            encoding="utf-8"
-        )
-
-def split_into_docs():
     base_dir = Path(__file__).parent
 
     input_file = base_dir / "corpus" / "input.txt"
-    original_dir = base_dir / "corpus" / "original"
+    output_dir = base_dir / "corpus" / "original"
 
-    original_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    text = input_file.read_text(encoding="utf-8")
+    # Read each line as a separate document
+    lines = input_file.read_text(encoding="utf-8").splitlines()
 
-    # Split only on periods
-    sentences = [s.strip() + "." for s in text.split(".") if s.strip()]
+    for i, line in enumerate(lines, start=1):
+        line = line.strip()
 
-    for i, sentence in enumerate(sentences, start=1):
-        doc_path = original_dir / f"doc_{i}.txt"
-        doc_path.write_text(sentence, encoding="utf-8")
+        if not line:
+            continue
 
-    print(f"Created {len(sentences)} original docs.")
+        doc_path = output_dir / f"doc_{i}.txt"
+        doc_path.write_text(line, encoding="utf-8")
+
+    print(f"Created {len([l for l in lines if l.strip()])} documents.")
 
 
 def encrypt_doc_ids():
@@ -80,3 +64,5 @@ def encrypt_doc_ids():
         writer = csv.DictWriter(f, fieldnames=["original", "opaque"])
         writer.writeheader()
         writer.writerows(mapping)
+
+encrypt_doc_ids()
