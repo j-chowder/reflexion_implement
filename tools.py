@@ -38,7 +38,7 @@ TOPICS = extract_topics()
 def search(query: str, top_k: int = 3) -> list[dict]:
     """
     Returns up to top_k documents ranked by relevance to query.
-    Each result: {"doc_id": "a3f9k2", "snippet": "first ~100 chars..."}
+    Each result: {"doc_id": "a3f9k2", "topic": [pre written topics for each document]}
     Does NOT return full document text.
     """
     # load docs
