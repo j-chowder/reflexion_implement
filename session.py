@@ -24,15 +24,20 @@ class Session:
             
         for idx in ranked_indices:
             doc_id = list(self.DOCUMENTS.keys())[idx]
+            score = scores[idx]
             topic = self.TOPICS[doc_id]
             
                 
             results.append({
                     "doc_id": doc_id,
-                    "topic": topic
+                    "score": score,
+                    "topic": topic,
+                    "text": self.DOCUMENTS[doc_id],
             })
             
             self.discovered_ids[doc_id] = self.discovered_ids.get(doc_id, []) + [query]
+            
+        print(results)
             
         return results
     
