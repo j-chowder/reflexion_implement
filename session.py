@@ -6,7 +6,7 @@ import csv
 
 class Session:
     def __init__(self, ):
-        self.discovered_ids = set() # read_doc will check against this to ensure that search tool is used. g
+        self.discovered_ids = {} # read_doc will check against this to ensure that search tool is used. g
         self.TOPICS = extract_topics()
         self.DOCUMENTS, self.VECTORIZER, self.DOC_VECTORS = build_tfidf()
     
@@ -32,7 +32,7 @@ class Session:
                     "topic": topic
             })
             
-            self.discovered_ids.add(doc_id)
+            self.discovered_ids[doc_id] = self.discovered_ids.get(doc_id, []) + [query]
             
         return results
     
@@ -41,6 +41,7 @@ class Session:
         # check if it went through actual search rigor rather than guessing.
         if doc_id not in self.discovered_ids:
             raise ValueError(f"Document ID '{doc_id}' was not prev discovered through a valid search.")
+        
         
         return {
             "doc_id": doc_id, 
