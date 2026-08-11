@@ -42,7 +42,6 @@ class Session:
         if doc_id not in self.discovered_ids:
             raise ValueError(f"Document ID '{doc_id}' was not prev discovered through a valid search.")
         
-        
         return {
             "doc_id": doc_id, 
             "topic": self.TOPICS[doc_id],
@@ -53,7 +52,6 @@ class Session:
 def extract_topics():
  with open("./corpus/topic_tags.json", "r", encoding="utf-8") as f:
     doc_titles = json.load(f)
-    print(doc_titles["doc_1"])
     mapping = {}
 
  with open("./corpus/mapping.csv", "r", encoding="utf-8") as f:
@@ -64,7 +62,6 @@ def extract_topics():
         encrypted_id = row["opaque"].replace(".txt", "")
 
         mapping[original_id] = encrypted_id
-    print(mapping["doc_1"])
     
  encrypted_titles = {}
 
