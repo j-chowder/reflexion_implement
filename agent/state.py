@@ -20,8 +20,8 @@ class EpisodeState:
         self.trace = trace
         self.surfaced_by = surfaced_by
         self.read_by = read_by
-        self.turn_number = turn_number,
-        self.final_answer = final_answer,
+        self.turn_number = turn_number
+        self.final_answer = final_answer
         self.termination_reason = termination_reason
     
 

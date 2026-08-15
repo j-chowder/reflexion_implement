@@ -6,7 +6,7 @@ import csv
 
 class Session:
     def __init__(self, ):
-        self.discovered_ids = {} # read_doc will check against this to ensure that search tool is used. g
+        self.discovered_ids = {} # read_doc will check against this to ensure that search tool is used.
         self.TOPICS = extract_topics()
         self.DOCUMENTS, self.VECTORIZER, self.DOC_VECTORS = build_tfidf()
     

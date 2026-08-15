@@ -67,8 +67,8 @@ def _validate_schema(parsed):
         raise ValueError(f"missing required fields: {missing}")
     if parsed["action"] not in ("search", "read_doc", "final_answer"):
         raise ValueError(f"invalid action: {parsed['action']}")
-    if "candidate_judgments" not in parsed:
-        parsed["candidate_judgments"] = None
+    if "candidate_judgements" not in parsed:
+        parsed["candidate_judgements"] = None
         
 messages = [{"role": "user", "content": "Goal: find who founded Iron Town. Begin."}]
 result = actor_step(messages)
