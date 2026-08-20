@@ -4,7 +4,7 @@ from groq import Groq
 
 client = Groq()  
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 
 def build_prompt(state) -> list[dict]:
     """

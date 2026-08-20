@@ -1,7 +1,7 @@
 from session import Session
-from agent.build_prompt import build_prompt
-from agent.step import actor_step
-from agent.state import TurnRecord, EpisodeState
+from build_prompt import build_prompt
+from step import actor_step
+from state import TurnRecord, EpisodeState
 
 # test = Session()
 
