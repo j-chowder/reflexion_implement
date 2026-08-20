@@ -15,6 +15,7 @@ You must respond with a JSON object only, no other text, matching this schema:
   "action_input": {...},
   "candidate_judgements": [{"doc_id": "...", "verdict": "read"|"discard", "justification": "..."}] or null
 }
+You have no tools available. Never attempt to call a tool, function, or browser action of any kind. Respond with the JSON object described below as plain text, nothing else.
 
 Rules:
 - action_input for "search" is {"query": "<your search string>"}
@@ -76,6 +77,12 @@ def _validate_schema(parsed, required_doc_ids=None):
         raise ValueError(f"missing required fields: {missing}")
     if parsed["action"] not in ("search", "read_doc", "final_answer"):
         raise ValueError(f"invalid action: {parsed['action']}")
+    if parsed["action"] == "search" and "query" not in parsed["action_input"]:
+        raise ValueError("search action_input missing 'query'")
+    if parsed["action"] == "read_doc" and "doc_id" not in parsed["action_input"]:
+        raise ValueError("read_doc action_input missing 'doc_id'")
+    if parsed["action"] == "final_answer" and "answer" not in parsed["action_input"]:
+        raise ValueError("final_answer action_input missing 'answer'")
     if "candidate_judgements" not in parsed:
         parsed["candidate_judgements"] = None
 

@@ -44,6 +44,8 @@ def _format_observation(record) -> str:
 
     elif record.action == "read_doc":
             content = record.raw_observation
+            if "error" in content:
+               return f'Error reading doc_id "{record.action_input.get("doc_id")}": {content["error"]}'
             return f'Contents of [{content["doc_id"]}] (topic: {content["topic"]}):\n"""\n{content["text"]}\n"""'
 
     elif record.action == "final_answer":

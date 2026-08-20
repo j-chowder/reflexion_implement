@@ -30,10 +30,13 @@ def run_episode(goal, session, max_iterations = 5):
             state.trace.append(record)
             
         elif response["action"] == "read_doc":
+          try:
             content = session.read_doc(response["action_input"]["doc_id"])
-            record.raw_observation = content
-            state.read_by.setdefault(response["action_input"]["doc_id"], []).append(state.turn_number)
-            state.trace.append(record)
+          except ValueError as e:
+            content = {"error": str(e)}
+          record.raw_observation = content
+          state.read_by.setdefault(response["action_input"]["doc_id"], []).append(state.turn_number)
+          state.trace.append(record)
             
     if state.termination_reason is None:
         state.termination_reason = "max_iterations_hit"
@@ -42,13 +45,15 @@ def run_episode(goal, session, max_iterations = 5):
 
 from session import Session
 
-session = Session()
-state = run_episode(
-    goal="What year was Iron Town's founder killed?",
-    session=session,
-    max_iterations=7
-)
-print(state.termination_reason)
-print(state.final_answer)
-for r in state.trace:
-    print(r.turn_number, r.action, r.action_input, r.candidate_judgements)
+if __name__ == "__main__":
+    session = Session()
+    state = run_episode(
+        goal="What year was Iron Town's founder killed?",
+        session=session,
+        max_iterations=7
+    )
+    print(state.termination_reason)
+    print(state.final_answer)
+    for r in state.trace:
+      print(r.turn_number, r.action, r.action_input, r.candidate_judgements)
+
