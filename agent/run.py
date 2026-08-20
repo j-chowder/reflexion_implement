@@ -46,7 +46,7 @@ session = Session()
 state = run_episode(
     goal="What year was Iron Town's founder killed?",
     session=session,
-    max_iterations=5
+    max_iterations=7
 )
 print(state.termination_reason)
 print(state.final_answer)

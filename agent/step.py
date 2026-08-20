@@ -13,14 +13,14 @@ You must respond with a JSON object only, no other text, matching this schema:
   "reasoning": "<what you still need to find out, and why you're taking this action>",
   "action": "search" | "read_doc" | "final_answer",
   "action_input": {...},
-  "candidate_judgments": [{"doc_id": "...", "verdict": "read"|"discard", "justification": "..."}] or null
+  "candidate_judgements": [{"doc_id": "...", "verdict": "read"|"discard", "justification": "..."}] or null
 }
 
 Rules:
 - action_input for "search" is {"query": "<your search string>"}
 - action_input for "read_doc" is {"doc_id": "<id>"}
 - action_input for "final_answer" is {"answer": "<your answer>"}
-- candidate_judgments is REQUIRED and non-null only on the turn immediately after you receive
+- candidate_judgements is REQUIRED and non-null only on the turn immediately after you receive
   search results: you must judge EVERY candidate returned, including ones you plan to discard.
   Explain why each discarded doc is likely irrelevant, not just that you're skipping it.
 - Search results are NOT pre-filtered for relevance. Some will be distractors. Judging
@@ -76,20 +76,20 @@ def _validate_schema(parsed, required_doc_ids=None):
         raise ValueError(f"missing required fields: {missing}")
     if parsed["action"] not in ("search", "read_doc", "final_answer"):
         raise ValueError(f"invalid action: {parsed['action']}")
-    if "candidate_judgments" not in parsed:
-        parsed["candidate_judgments"] = None
+    if "candidate_judgements" not in parsed:
+        parsed["candidate_judgements"] = None
 
     if required_doc_ids:
-        cj = parsed.get("candidate_judgments")
+        cj = parsed.get("candidate_judgements")
         if not cj:
             raise ValueError(
-                f"candidate_judgments required after search, got null. "
+                f"candidate_judgements required after search, got null. "
                 f"Must judge: {sorted(required_doc_ids)}"
             )
         judged_ids = {j.get("doc_id") for j in cj}
         missing_ids = required_doc_ids - judged_ids
         if missing_ids:
-            raise ValueError(f"candidate_judgments missing doc_ids: {sorted(missing_ids)}")
+            raise ValueError(f"candidate_judgements missing doc_ids: {sorted(missing_ids)}")
         
 if __name__ == "__main__":
     messages = [{"role": "user", "content": "Goal: find who founded Iron Town. Begin."}]
